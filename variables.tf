@@ -16,7 +16,7 @@ variable "ip_address" {
 }
 
 variable "name" {
-  default     = "vnic_iscsi_target"
+  default     = "default"
   description = "Name for the Policy."
   type        = string
 }

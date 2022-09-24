@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Fibre-Channel Pool Example
+# iSCSI Static Target Policy Example
 
 To run this example you need to execute:
 
@@ -13,23 +13,23 @@ Note that this example will create resources. Resources can be destroyed with `t
 
 ### main.tf
 ```hcl
-module "wwpn_pool" {
-  source  = "scotttyso/pools-fc/intersight"
+module "iscsi_static_target" {
+  source  = "terraform-cisco-modules/policies-iscsi-static-target/intersight"
   version = ">= 1.0.1"
 
-  assignment_order = "sequential"
-  description      = "Demo WWPN Pool"
-  id_blocks = [
-    {
-      from = "0:00:00:25:B5:00:00:00"
-      size = 1000
-    }
-  ]
+  description  = "default iSCSI Static Target Policy."
   name         = "default"
   organization = "default"
-  pool_purpose = "WWPN"
+  ip_address   = "198.18.0.1"
+  port         = 3260
+  target_name  = "iqn.1992-08.com.ci:sn.e461ee9f190611ebb06300a0985b4a87:vs.3"
+  lun = [
+    {
+      bootable = true
+      lun_id   = 0
+    }
+  ]
 }
-
 ```
 
 ### variables.tf
