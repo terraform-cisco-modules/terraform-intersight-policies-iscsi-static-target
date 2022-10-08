@@ -1,51 +1,15 @@
-terraform {
-  required_providers {
-    test = {
-      source = "terraform.io/builtin/test"
-    }
-
-    intersight = {
-      source  = "CiscoDevNet/intersight"
-      version = ">=1.0.32"
-    }
-  }
-}
-
 module "main" {
-  source           = "../.."
-  assignment_order = "sequential"
-  description      = "Demo WWPN Pool"
-  id_blocks = [
+  source      = "../.."
+  description = "${var.name} iSCSI Static Target Policy."
+  ip_address  = "198.18.32.60"
+  lun = [
     {
-      from = "0:00:00:25:B5:00:00:00"
-      size = 1000
+      bootable = true
+      lun_id   = 0
     }
   ]
-  name         = "default"
-  organization = "default"
-  pool_purpose = "WWPN"
-}
-
-data "intersight_fcpool_pool" "wwpn_pool" {
-  depends_on = [
-    module.main
-  ]
-  name = "default"
-}
-
-resource "test_assertions" "wwpn_pool" {
-  component = "wwpn_pool"
-
-  # equal "description" {
-  #   description = "description"
-  #   got         = data.intersight_fcpool_pool.wwpn_pool.description
-  #   want        = "Demo WWPN Pool"
-  # }
-  # 
-  # equal "name" {
-  #   description = "name"
-  #   got         = data.intersight_fcpool_pool.wwpn_pool.name
-  #   want        = "default"
-  # }
-
+  name         = var.name
+  organization = "terratest"
+  port         = 3260
+  target_name  = "iqn.1992-08.com.ci:sn.e461ee9f190611ebb06300a0985b4a87:vs.3"
 }
